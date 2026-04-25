@@ -12,7 +12,7 @@ class CreatePostUseCase:
     async def execute(self, post: PostSchema) -> PostSchema:
         try:
             with self._database.session() as session:
-                post = self._repo.create(session=session, post=post)
+                new_post = self._repo.create(session=session, post=post)
         except PostAlreadyExistsException:
-            raise PostIdIsNotUniqueException
-        return PostSchema.model_validate(obj=post)
+            raise PostIdIsNotUniqueException(id=post.id)
+        return PostSchema.model_validate(obj=new_post)

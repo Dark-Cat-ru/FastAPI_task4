@@ -10,11 +10,11 @@ from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parents[1] / "src"))
 
-from task3.src.infrastructure.sqlite.database import Base
-from task3.src.infrastructure.sqlite.models.users import *
-from task3.src.infrastructure.sqlite.models.posts import *
-from task3.src.infrastructure.sqlite.models.locations import *
-from task3.src.infrastructure.sqlite.models.categories import *
+from task4.src.infrastructure.sqlite.database import Base
+from task4.src.infrastructure.sqlite.models.users import *
+from task4.src.infrastructure.sqlite.models.posts import *
+from task4.src.infrastructure.sqlite.models.locations import *
+from task4.src.infrastructure.sqlite.models.categories import *
 
 config = context.config
 

@@ -65,11 +65,11 @@ async def delete_user(
 
 @router.get("/post/{id}", status_code=status.HTTP_200_OK, response_model=Post)
 async def get_post_by_id(
-    login: str,
+    id: str,
     use_case: GetPostByIdUseCase = Depends(get_post_by_id_use_case),
 ) -> Post:
     try:
-        return await use_case.execute(login=login)
+        return await use_case.execute(id=id)
     except PostNotFoundByIdException as exc:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

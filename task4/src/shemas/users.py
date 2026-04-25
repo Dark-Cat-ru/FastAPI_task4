@@ -4,12 +4,13 @@ from fastapi import HTTPException, status
 class BaseUser(BaseModel):
     login: str
 
+class CreateUser(BaseUser):
+    password: str
+
 class User(BaseUser):
     model_config = ConfigDict(from_attributes=True)
     password: SecretStr = Field(min_length=8)
 
-class CreateUser(BaseUser):
-    password: str
 
     @field_validator("login", mode="after")
     @staticmethod

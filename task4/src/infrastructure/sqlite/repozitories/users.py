@@ -27,14 +27,14 @@ class UserRepozitory:
             insert(self._model).values(user.model_dump()).returning(self._model)
         )
         try:
-            user = session.scalar(query)
+            return session.scalar(query)
         except IntegrityError:
+            session.rollback()
             raise UserAlreadyExistsException()
-        return user
 
     def delete_user(self, session: Session, login: str):
         user = session.query(UserModel).filter_by(login=login).first()
         if not user:
-            raise UserNotFoundException
+            raise UserNotFoundException()
         session.delete(user)
         session.commit()

@@ -18,7 +18,7 @@ class PostRepozitory:
         )
         post = session.scalar(query)
         if not post:
-            raise PostNotFoundException
+            raise PostNotFoundException()
         return post
 
     def create(self, session: Session, post: PostShema) -> PostModel:
@@ -28,22 +28,22 @@ class PostRepozitory:
             .returning(self._model)
         )
         try:
-            post = session.scalar(query)
+            return session.scalar(query)
         except IntegrityError:
-            raise PostAlreadyExistsException
-        return post
+            session.rollback()
+            raise PostAlreadyExistsException()
 
     def delete(self, session: Session, id: int):
         post = session.query(PostModel).filter_by(id=id).first()
         if not post:
-            raise PostNotFoundException
+            raise PostNotFoundException()
         session.delete(post)
         session.commit()
 
     def change(self, session: Session, new_post: str, old_post_id: int) -> PostModel:
         old_post = session.query(PostModel).filter(PostModel.id==old_post_id)
         if not old_post:
-            raise PostNotFoundException
+            raise PostNotFoundException()
         return old_post.update(
             {'text': new_post}
         )
