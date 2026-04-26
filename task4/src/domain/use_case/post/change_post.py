@@ -14,5 +14,5 @@ class ChangePostUseCase:
             with self._database.session() as session:
                 post = self._repo.change(session=session, new_post=new_post, old_post_id=old_post_id)
         except PostAlreadyExistsException:
-            raise PostIdIsNotUniqueException(id=post.id)
+            raise PostIdIsNotUniqueException(id=old_post_id)
         return PostSchema.model_validate(obj=post)
