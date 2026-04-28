@@ -23,14 +23,11 @@ class PostRepozitory:
 
     def create(self, session: Session, post: PostShema) -> PostModel:
         query = (
-            insert(self._model)
-            .values(post.model_dump())
-            .returning(self._model)
+            insert(self._model).values(post.model_dump()).returning(self._model)
         )
         try:
             return session.scalar(query)
         except IntegrityError:
-            session.rollback()
             raise PostAlreadyExistsException()
 
     def delete(self, session: Session, id: int):
@@ -41,9 +38,10 @@ class PostRepozitory:
         session.commit()
 
     def change(self, session: Session, new_post: str, old_post_id: int) -> PostModel:
-        old_post = session.query(PostModel).filter(PostModel.id==old_post_id)
-        if not old_post:
+        old_post = session.scalar(select(self._model).where(self._model.id == old_post_id))
+        if old_post is None:
             raise PostNotFoundException()
-        return old_post.update(
-            {'text': new_post}
-        )
+        old_post.text = new_post
+        session.commit()
+        session.refresh(old_post)
+        return old_post

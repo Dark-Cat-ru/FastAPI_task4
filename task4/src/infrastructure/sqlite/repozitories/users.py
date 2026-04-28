@@ -14,8 +14,7 @@ class UserRepozitory:
 
     def get(self, session: Session, login: str) -> UserModel:
         query = (
-            select(self._model)
-            .where(self._model.login==login)
+            select(self._model).where(self._model.login == login)
         )
         user = session.scalar(query)
         if not user:
@@ -29,7 +28,6 @@ class UserRepozitory:
         try:
             return session.scalar(query)
         except IntegrityError:
-            session.rollback()
             raise UserAlreadyExistsException()
 
     def delete_user(self, session: Session, login: str):

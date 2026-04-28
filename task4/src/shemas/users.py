@@ -15,8 +15,9 @@ class User(BaseUser):
     @field_validator("login", mode="after")
     @staticmethod
     def check_login(login: str) -> str:
-        if 'bot' in str.lower(login):
+        if 'bot' in login.lower():
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
                 detail="Логин пользователя не должен содержать слова bot"
             )
+        return login

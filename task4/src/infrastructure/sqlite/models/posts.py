@@ -21,18 +21,15 @@ class Post(Base):
         nullable=False,
         primary_key=True
     )
-    pub_date: Mapped[datetime] = mapped_column(default=datetime.now)
+    pub_date: Mapped[datetime] = mapped_column(default=datetime.now())
     author_login: Mapped[str] = mapped_column(
-        ForeignKey("users.login"),
+        ForeignKey("users.login", ondelete="CASCADE", onupdate="CASCADE"),
         nullable=False
     )
-    author: Mapped[User] = relationship()
     location_name: Mapped[str] = mapped_column(
-        ForeignKey("locations.name")
+        ForeignKey("locations.name", ondelete="CASCADE", onupdate="CASCADE")
     )
-    location: Mapped[Location] = relationship()
     category_title: Mapped[str] = mapped_column(
-        ForeignKey("categories.title"),
+        ForeignKey("categories.title", ondelete="CASCADE", onupdate="CASCADE"),
         nullable=False
     )
-    category: Mapped[Category] = relationship()
