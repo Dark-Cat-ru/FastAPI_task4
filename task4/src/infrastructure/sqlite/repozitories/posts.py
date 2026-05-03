@@ -38,10 +38,10 @@ class PostRepozitory:
         session.commit()
 
     def change(self, session: Session, new_post: str, old_post_id: int) -> PostModel:
-        old_post = session.scalar(select(self._model).where(self._model.id == old_post_id))
-        if old_post is None:
+        post = session.scalar(select(self._model).where(self._model.id == old_post_id))
+        if post is None:
             raise PostNotFoundException()
-        old_post.text = new_post
+        post.text = new_post
         session.commit()
-        session.refresh(old_post)
-        return old_post
+        session.refresh(post)
+        return post

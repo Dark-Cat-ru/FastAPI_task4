@@ -14,5 +14,6 @@ class UserAlreadyExistsException(BaseDatabaseException):
 class PostNotFoundException(BaseDatabaseException):
     pass
 
+
 class PostAlreadyExistsException(BaseDatabaseException):
     pass
